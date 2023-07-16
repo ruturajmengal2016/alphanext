@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Add Student</h1>
+<div mat-dialog-content>
+  <form (submit)="show()" style="display: flex; flex-direction: column">
+    <mat-form-field class="example-full-width" *ngFor="let field of fields">
+      <mat-label>{{field.toUpperCase()}}</mat-label>
+      <input
+        required
+        matInput
+        placeholder="Write here"
+        name="{{field}}"
+        (input)="saveData($event)"
+      />
+    </mat-form-field>
+    <button mat-raised-button style="background-color: lightpink" type="submit">
+      Save
+    </button>
+  </form>
+</div>

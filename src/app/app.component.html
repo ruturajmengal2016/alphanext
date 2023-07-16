@@ -1,0 +1,32 @@
+<div class="root">
+  <mat-toolbar color="primary" class="header">
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a
+      routerLink="/"
+      style="font-size: 1.5rem; text-decoration: none; color: whitesmoke"
+      >Home</a
+    >
+    <button
+      mat-raised-button
+      [routerLink]="['/teacher']"
+      style="
+        background-color: rgb(77, 77, 248);
+        position: absolute;
+        right: 1rem;
+        font-size: 1.1rem;
+      "
+    >
+      Login / Register
+    </button>
+    <span class="example-spacer"></span>
+  </mat-toolbar>
+  <div style="height: 90%">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<div class="root">
+  <form
+    class="example-form"
+    style="border: 1px solid red; background-color: rgb(29, 32, 29)"
+    *ngIf="change"
+  >
+    <h1 style="color: white">Sign Up Today</h1>
+    <br />
+    <mat-form-field
+      appearance="outline"
+      class="example-full-width"
+      *ngFor="let field of ['name', 'email', 'password']; let i = index"
+    >
+      <mat-label>{{ field }}</mat-label>
+      <input
+        style="border-color: black"
+        autocomplete="off"
+        name="{{ field }}"
+        type="{{ field }}"
+        matInput
+        [formControl]="emailFormControl"
+        placeholder="Ex. pat@example.com"
+        (input)="fillValue($event)"
+      />
+      <mat-error
+        *ngIf="
+          emailFormControl.hasError('email') &&
+          !emailFormControl.hasError('required')
+        "
+      >
+        Please enter a valid {{ field }}
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        {{ field }} is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <div
+      style="
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        style="background-color: rgb(232, 68, 68); width: 20%; font-size: large"
+        (click)="register()"
+      >
+        {{ change ? "Register" : "Login" }}
+      </button>
+      <h3 style="color: whitesmoke">
+        Already have an account?
+        <span style="cursor: pointer" (click)="toggle()">Login</span>
+      </h3>
+    </div>
+  </form>
+  <form
+    class="example-form"
+    style="border: 1px solid red; background-color: rgb(38, 41, 38)"
+    *ngIf="!change"
+  >
+    <h1 style="color: white">Login here</h1>
+    <br />
+    <mat-form-field
+      appearance="outline"
+      class="example-full-width"
+      *ngFor="let field of ['email', 'password']; let i = index"
+    >
+      <mat-label>{{ field }}</mat-label>
+      <input
+        autocomplete="off"
+        name="{{ field }}"
+        type="text"
+        matInput
+        [formControl]="emailFormControl"
+        (input)="fillValue($event)"
+      />
+      <mat-error
+        *ngIf="
+          emailFormControl.hasError('email') &&
+          !emailFormControl.hasError('required')
+        "
+      >
+        Please enter a valid {{ field }}
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        {{ field }} is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <div
+      style="
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        style="background-color: rgb(232, 68, 68); width: 20%; font-size: large"
+        (click)="login()"
+      >
+        {{ change ? "Register" : "Login" }}
+      </button>
+      <h3 style="color: white">
+        {{ change ? "Already" : "Don't" }} have an account?
+        <span style="cursor: pointer" (click)="toggle()">{{
+          change ? "Login" : "SignUp"
+        }}</span>
+      </h3>
+    </div>
+  </form>
+</div>

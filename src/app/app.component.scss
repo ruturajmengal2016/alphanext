@@ -1,0 +1,31 @@
+.root {
+  height: 100vh;
+  background-color: lavenderblush;
+  display: flex;
+  flex-direction: column;
+  .header {
+    height: 10%;
+    background-color: rgb(251, 49, 49);
+    .example-spacer {
+      flex: 1 1 auto;
+    }
+  }
+  .example-container {
+    height: 90%;
+
+    mat-drawer {
+      width: 15%;
+    }
+
+    mat-drawer-content {
+      height: 100%;
+      width: 85%;
+      background-color: lightskyblue;
+    }
+
+    .sidebar {
+      background-color: gray;
+      height: 100%;
+    }
+  }
+}

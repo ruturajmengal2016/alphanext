@@ -1,0 +1,14 @@
+<div class="root">
+  <div *ngIf="!details">
+    <h1 style="font-size: 5rem">Welcome to all Staff Members</h1>
+  </div>
+  <div *ngIf="details" class="profile">
+    <h2>
+      Collge Name: Dr. Ulhas Patil College of Agricultural Engineering and
+      Technology, Jalgaon
+    </h2>
+    <h2>Prof. Name: {{ details.name }}</h2>
+    <h2>Email: {{ details.email }}</h2>
+    <h2>Designation: Assistant Professor</h2>
+  </div>
+</div>
