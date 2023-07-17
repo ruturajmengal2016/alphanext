@@ -67,7 +67,7 @@
         <button
           mat-button
           [routerLink]="['/performance/', student.id]"
-          [queryParams]="{ id: student.id }"
+          [queryParams]="{ id: student.id, email: teacherEmail }"
         >
           SHOW MORE
         </button>

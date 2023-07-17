@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AppService } from '../app.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 @Component({
@@ -9,11 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./teacher.component.scss'],
 })
 export class TeacherComponent {
-  constructor(
-    private data: AppService,
-    private client: HttpClient,
-    private readonly route: Router
-  ) {}
+  constructor(private client: HttpClient, private readonly route: Router) {}
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -32,7 +27,7 @@ export class TeacherComponent {
   async register() {
     if (this.details.email && this.details.password) {
       await this.client
-        .post('http://localhost:5000/api/teacher/register', {
+        .post('https://alphabackend.onrender.com/api/teacher/register', {
           name: this.details.name,
           email: this.details.email,
           password: this.details.password,
@@ -53,14 +48,16 @@ export class TeacherComponent {
   async login(): Promise<any> {
     if (this.details.email && this.details.password) {
       return await this.client
-        .post(`http://localhost:5000/api/login`, {
+        .post('https://alphabackend.onrender.com/api/login', {
           email: this.details.email,
           password: this.details.password,
         })
         .subscribe({
-          next: (response) => {
-            this.data.teacherData = response;
-            this.route.navigate(['/students']);
+          next: (response: any) => {
+            this.route.navigate([
+              '/students',
+              { id: response.id, name: response.name, email: response.email },
+            ]);
           },
           error: (error) => {
             console.error('There was an error!', error);

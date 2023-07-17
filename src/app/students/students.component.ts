@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AppService } from '../app.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'dialog-elements-example-dialog',
@@ -33,7 +33,7 @@ export class DialogElementsExampleDialog {
   };
   constructor(
     private readonly client: HttpClient,
-    private readonly service: AppService
+    private readonly router: ActivatedRoute
   ) {}
   saveData(event: any) {
     this.data = { ...this.data, [event.target.name]: event.target.value };
@@ -54,7 +54,7 @@ export class DialogElementsExampleDialog {
           age: Number(this.data.age),
           gender: this.data.gender,
           class: this.data.class,
-          teacherId: this.service.teacherData.id,
+          teacherId: this.router.snapshot.paramMap.get('id'),
         })
         .subscribe({
           next: () => {
@@ -81,14 +81,28 @@ export class StudentsComponent {
   originally bred for hunting.`;
 
   students: any;
+  teacherEmail: any;
   constructor(
-    private readonly data: AppService,
     private readonly client: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly router: ActivatedRoute
   ) {
-    this.data.getPosts().subscribe((data) => {
-      this.students = data;
-    });
+    this.teacherEmail = this.router.snapshot.paramMap.get('email');
+
+    this.client
+      .get(
+        `https://alphabackend.onrender.com/api/teacher/${this.router.snapshot.paramMap.get(
+          'email'
+        )}`
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.students = response;
+        },
+        error: (error) => {
+          console.error('There was an error!', error);
+        },
+      });
   }
 
   sortbyAtoZ() {
@@ -101,7 +115,6 @@ export class StudentsComponent {
       }
       return 0;
     });
-    console.log(this.students);
   }
   sortbyAge() {
     this.students = this.students.sort((a: any, b: any) => {
@@ -113,7 +126,6 @@ export class StudentsComponent {
       }
       return 0;
     });
-    console.log(this.students);
   }
   openDialog() {
     this.dialog.open(DialogElementsExampleDialog, {
@@ -122,7 +134,7 @@ export class StudentsComponent {
   }
   async delete(id: string) {
     return await this.client
-      .delete(`http://localhost:5000/api/student/${id}`)
+      .delete(`https://alphabackend.onrender.com/api/student/${id}`)
       .subscribe((data) => {
         console.log(data);
       });

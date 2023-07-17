@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AppService } from '../app.service';
 @Component({
   selector: 'app-performance',
   templateUrl: './performance.component.html',
@@ -13,27 +12,45 @@ export class PerformanceComponent implements OnInit {
   student: any;
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly sever: HttpClient,
-    private readonly service: AppService
-  ) {
-    this.id = this.route.snapshot.queryParamMap.get('id');
-    this.service.students.forEach((e: any, ind: number) => {
-      if (e.id === this.id) {
-        this.student = this.service.students[ind];
-      }
-    });
-  }
+    private readonly sever: HttpClient
+  ) {}
   longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
   from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
   originally bred for hunting.`;
   ngOnInit(): void {
-    this.sever.get(`http://localhost:3000/api/test/${this.id}`).subscribe({
-      next: (response) => {
-        this.data = response;
-      },
-      error: (error) => {
-        console.error('There was an error!', error);
-      },
-    });
+    this.sever
+      .get(
+        `https://alphabackend.onrender.com/api/teacher/${this.route.snapshot.queryParamMap.get(
+          'email'
+        )}`
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.student = response;
+          this.student.forEach((element: any) => {
+            if (element.id === this.route.snapshot.paramMap.get('id')) {
+              this.student = element;
+            }
+          });
+        },
+        error: (error) => {
+          console.error('There was an error!', error);
+        },
+      });
+
+    this.sever
+      .get(
+        `https://alphabackend.onrender.com/api/test/${this.route.snapshot.paramMap.get(
+          'id'
+        )}`
+      )
+      .subscribe({
+        next: (response) => {
+          this.data = response;
+        },
+        error: (error) => {
+          console.error('There was an error!', error);
+        },
+      });
   }
 }
