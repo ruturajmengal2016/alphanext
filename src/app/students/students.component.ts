@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'dialog-elements-example-dialog',
@@ -33,7 +34,7 @@ export class DialogElementsExampleDialog {
   };
   constructor(
     private readonly client: HttpClient,
-    private readonly router: ActivatedRoute
+    private readonly service: AppService
   ) {}
   saveData(event: any) {
     this.data = { ...this.data, [event.target.name]: event.target.value };
@@ -47,14 +48,14 @@ export class DialogElementsExampleDialog {
       this.data.roll_no
     ) {
       await this.client
-        .post('http://localhost:5000/api/student/register', {
+        .post('https://alphabackend.onrender.com/api/student/register', {
           name: this.data.name,
           email: this.data.email,
           roll_no: Number(this.data.roll_no),
           age: Number(this.data.age),
           gender: this.data.gender,
           class: this.data.class,
-          teacherId: this.router.snapshot.paramMap.get('id'),
+          teacherId: this.service.tearcherId,
         })
         .subscribe({
           next: () => {
@@ -82,6 +83,7 @@ export class StudentsComponent {
 
   students: any;
   teacherEmail: any;
+  teacherId: any;
   constructor(
     private readonly client: HttpClient,
     public dialog: MatDialog,

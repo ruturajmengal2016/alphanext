@@ -2,13 +2,18 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AppService } from '../app.service';
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.component.html',
   styleUrls: ['./teacher.component.scss'],
 })
 export class TeacherComponent {
-  constructor(private client: HttpClient, private readonly route: Router) {}
+  constructor(
+    private client: HttpClient,
+    private readonly route: Router,
+    private readonly service: AppService
+  ) {}
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -54,6 +59,7 @@ export class TeacherComponent {
         })
         .subscribe({
           next: (response: any) => {
+            this.service.tearcherId = response.id;
             this.route.navigate([
               '/students',
               { id: response.id, name: response.name, email: response.email },
